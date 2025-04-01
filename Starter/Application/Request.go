@@ -2,7 +2,9 @@ package Application
 
 import (
 	"database/sql"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"go-bilal-starter/Models"
 	"gorm.io/gorm"
 )
 
@@ -10,6 +12,9 @@ type Request struct {
 	Context    *gin.Context
 	DB         *gorm.DB
 	Connection *sql.DB
+	User       *Models.User
+	IsAuth     bool
+	IsAdmin    bool
 }
 
 type shareResources interface {
@@ -36,4 +41,22 @@ func NewRequest(c *gin.Context) Request {
 func (r Request) response(code int, body interface{}) {
 	CloseConnection(&r)
 	r.Context.JSON(code, body)
+}
+
+func (r Request) Auth() Request {
+	r.IsAuth = false
+
+	requestHeader := r.Context.GetHeader("Authorization")
+	fmt.Println("Authorization Header => ", requestHeader)
+
+	if requestHeader != "" {
+		r.DB.Where("token = ?", requestHeader).First(&r.User)
+		if r.User.ID != 0 {
+			r.IsAuth = true
+		}
+
+	}
+
+	return r
+
 }

@@ -8,8 +8,11 @@ import (
 )
 
 func CreateUser(c *gin.Context) {
-	request := Application.NewRequest(c)
-	fmt.Println("check the connection in NewRequest :", request.Connection.Ping())
+	request := Application.NewRequest(c).Auth()
+	if !request.IsAuth {
+		request.NotAuth()
+		return
+	}
 
 	user := Models.User{
 		FirstName: "bilal",
