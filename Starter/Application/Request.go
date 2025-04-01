@@ -1,4 +1,4 @@
-package main
+package Application
 
 import (
 	"database/sql"
@@ -27,13 +27,13 @@ func req() func(c *gin.Context) Request {
 	}
 }
 
-func newRequest(c *gin.Context) Request {
+func NewRequest(c *gin.Context) Request {
 	req := req()
 	request := req(c)
 	return request
 }
 
 func (r Request) response(code int, body interface{}) {
-	closeConnection(&r)
+	CloseConnection(&r)
 	r.Context.JSON(code, body)
 }

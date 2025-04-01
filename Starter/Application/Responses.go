@@ -1,16 +1,16 @@
-package main
+package Application
 
 import "github.com/gin-gonic/gin"
 
-func (r Request) ok(body interface{}) {
+func (r Request) Ok(body interface{}) {
 	r.response(200, body)
 }
 
-func (r Request) created(body interface{}) {
+func (r Request) Created(body interface{}) {
 	r.Context.JSON(201, body)
 }
 
-func (r Request) notAuth() {
+func (r Request) NotAuth() {
 	r.response(402, gin.H{
 		"message": "Not Authorized",
 	})

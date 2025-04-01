@@ -1,4 +1,4 @@
-package main
+package Application
 
 import (
 	"database/sql"
@@ -21,6 +21,11 @@ func returnConnection(db *gorm.DB) *sql.DB {
 	if err != nil {
 		fmt.Println("return Connection issue :", err.Error())
 	}
+
+	if err := connection.Ping(); err != nil {
+		fmt.Println("❌ DB not reachable: ", err)
+	}
+
 	return connection
 }
 
@@ -38,7 +43,7 @@ func connectToDB(share shareResources) {
 
 }
 
-func closeConnection(share shareResources) {
+func CloseConnection(share shareResources) {
 	switch share.(type) {
 	case *Application:
 		app := share.(*Application)
