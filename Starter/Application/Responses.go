@@ -15,3 +15,7 @@ func (r Request) NotAuth() {
 		"message": "Not Authorized",
 	})
 }
+
+func (r Request) BadRequest(err interface{}) {
+	r.response(422, err)
+}
