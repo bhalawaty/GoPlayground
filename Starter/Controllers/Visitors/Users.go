@@ -2,6 +2,7 @@ package Visitors
 
 import (
 	"fmt"
+	"github.com/bykovme/gotrans"
 	"github.com/gin-gonic/gin"
 	"go-bilal-starter/Application"
 	"go-bilal-starter/Models"
@@ -29,6 +30,9 @@ func CreateUser(c *gin.Context) {
 	} else {
 		fmt.Println("✅ User created with ID:", user.ID)
 	}
-
-	request.Created(user)
+	request.Ok(gin.H{
+		"message": gotrans.T("hello_world"),
+		"Lang":    request.Lang,
+	})
+	//request.Created(user)
 }
